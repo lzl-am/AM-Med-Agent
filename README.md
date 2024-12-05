@@ -35,3 +35,9 @@
 - 测试与优化：在实际医疗场景中测试系统，收集反馈并进行优化。
 
 
+## 数据集
+
+- [ShenNong_TCM_Dataset](https://huggingface.co/datasets/michaelwzhu/ShenNong_TCM_Dataset)
+- [中文医疗对话数据集](https://tianchi.aliyun.com/dataset/90163)
+- [面向家庭常见疾病的知识图谱](http://data.openkg.cn/dataset/medicalgraph#)
+- [中药说明书实体识别](https://tianchi.aliyun.com/dataset/86819)
