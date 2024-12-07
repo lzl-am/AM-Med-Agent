@@ -64,3 +64,27 @@ if __name__ == "__main__":
         for line in tqdm(infile, total=total_lines, desc="Processing"):
             processed_line = process_line(line.strip())
             outfile.write(processed_line + '\n')
+
+    print("完整数据已处理并保存到", output_file)
+    print("数据行数:", total_lines)
+
+    output_small_file = "../data/finetune_data/medical_small_datasets.jsonl"
+    # 设置最大处理行数为 10000
+    max_lines = 10000
+
+    with open(input_file, 'r', encoding='utf-8') as infile, \
+            open(output_small_file, 'w', encoding='utf-8') as outfile:
+        # 计算总行数并输出
+        total_lines = sum(1 for _ in infile)
+        infile.seek(0)  # 重置文件指针到开头
+
+        # 初始化计数器
+        line_count = 0
+
+        # 使用 tqdm 创建进度条
+        for line in tqdm(infile, total=min(total_lines, max_lines), desc="Processing"):
+            if line_count >= max_lines:  # 如果已经处理了最大行数，退出循环
+                break
+            processed_line = process_line(line.strip())
+            outfile.write(processed_line + '\n')
+            line_count += 1
