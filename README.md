@@ -39,3 +39,24 @@
 - [中文医疗对话数据集](https://tianchi.aliyun.com/dataset/90163)
 - [面向家庭常见疾病的知识图谱](http://data.openkg.cn/dataset/medicalgraph#)
 - [中药说明书实体识别](https://tianchi.aliyun.com/dataset/86819)
+
+## 部署说明
+
+### 用药指导指令微调
+
+```bash
+# 模型准备
+# 软链接
+ln -s /root/share/new_models/Shanghai_AI_Laboratory/internlm2_5-7b-chat /root/home/AM-Med-Agent/model/internlm2_5-7b-chat
+
+mkdir /root/home/AM-Med-Agent/work_dir
+mkdir /root/home/AM-Med-Agent/work_dir/medical_finetune
+
+# 指令微调
+cd /root/home/AM-Med-Agent
+conda activate xtuner-env
+xtuner train ./config/internlm2_5_chat_7b_qlora_alpaca_e3.py --deepspeed deepspeed_zero2 --work-dir ./work_dir/medical_finetune
+```
+- `xtuner train` 命令用于启动模型微调进程。该命令需要一个参数：CONFIG 用于指定微调配置文件
+- 训练过程中产生的所有文件，包括日志、配置文件、检查点文件、微调后的模型等，默认保存在 `work_dir` 目录下
+- `--deepspeed deepspeed_zero2` 参数用于指定使用 DeepSpeed 进行模型训练，并启用 ZeRO-2 优化策略
