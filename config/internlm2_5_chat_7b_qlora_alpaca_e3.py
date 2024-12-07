@@ -28,7 +28,8 @@ pretrained_model_name_or_path = '/root/home/AM-Med-Agent/model/internlm2_5-7b-ch
 use_varlen_attn = False
 
 # Data
-alpaca_en_path = '/root/home/AM-Med-Agent/data/finetune_data/medical_datasets.jsonl'
+# alpaca_en_path = '/root/home/AM-Med-Agent/data/finetune_data/medical_datasets.jsonl'
+alpaca_en_path = '/root/home/AM-Med-Agent/data/finetune_data/medical_small_datasets.jsonl'
 prompt_template = PROMPT_TEMPLATE.internlm2_chat
 # 单条数据最大 Token 数，超过则截断
 max_length = 4096
