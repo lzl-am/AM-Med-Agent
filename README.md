@@ -60,3 +60,40 @@ xtuner train ./config/internlm2_5_chat_7b_qlora_alpaca_e3.py --deepspeed deepspe
 - `xtuner train` 命令用于启动模型微调进程。该命令需要一个参数：CONFIG 用于指定微调配置文件
 - 训练过程中产生的所有文件，包括日志、配置文件、检查点文件、微调后的模型等，默认保存在 `work_dir` 目录下
 - `--deepspeed deepspeed_zero2` 参数用于指定使用 DeepSpeed 进行模型训练，并启用 ZeRO-2 优化策略
+
+### 权重转化
+
+将原本使用 Pytorch 训练出来的模型权重文件转换为目前通用的 HuggingFace 格式文件
+
+```bash
+cd /root/home/AM-Med-Agent/work_dir/medical_finetune
+
+# 找到/root/home/AM-Med-Agent/work_dir/medical_finetune/目录下最新的.pth文件，并将其路径赋值给变量pth_file
+pth_file=`ls -t /root/home/AM-Med-Agent/work_dir/medical_finetune/*.pth | head -n 1 | sed 's/:$//'`
+# 打印变量的值
+echo $pth_file
+
+# 强制Intel的Math Kernel Library（MKL）使用Intel的实现
+export MKL_SERVICE_FORCE_INTEL=1
+# 指定了MKL使用的线程层，这里选择的是GNU线程层
+export MKL_THREADING_LAYER=GNU
+
+# 权重转换
+xtuner convert pth_to_hf ./internlm2_5_chat_7b_qlora_alpaca_e3.py ${pth_file} ./hf
+```
+
+### 模型合并
+
+```bash
+cd /root/home/AM-Med-Agent/work_dir/medical_finetune
+
+export MKL_SERVICE_FORCE_INTEL=1
+export MKL_THREADING_LAYER=GNU
+
+xtuner convert merge /root/home/AM-Med-Agent/model/internlm2_5-7b-chat ./hf ./merged --max-shard-size 2GB
+```
+- 原模型路径：`/root/home/AM-Med-Agent/model/internlm2_5-7b-chat`
+- Adapter 层的路径：`./hf`
+- 合并后的模型路径：`./merged`
+- `--max-shard-size 2GB` 参数用于指定每个分片的最大大小为 2GB
+
