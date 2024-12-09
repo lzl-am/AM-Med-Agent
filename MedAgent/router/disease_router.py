@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
-from langsmith import traceable
 from pydantic import BaseModel, Field
 
 
