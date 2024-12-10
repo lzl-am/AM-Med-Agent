@@ -97,3 +97,51 @@ xtuner convert merge /root/home/AM-Med-Agent/model/internlm2_5-7b-chat ./hf ./me
 - 合并后的模型路径：`./merged`
 - `--max-shard-size 2GB` 参数用于指定每个分片的最大大小为 2GB
 
+### 启动 API 服务器
+
+```bash
+# 本地机器与开发机进行端口映射
+ssh -p 36100 root@ssh.intern-ai.org.cn -CNg -L 23333:127.0.0.1:23333 -o StrictHostKeyChecking=no
+```
+
+```bash
+conda activate lmdeploy
+
+lmdeploy serve api_server \
+    /root/home/AM-Med-Agent/work_dir/medical_finetune/merged \
+    --model-format hf \
+    --quant-policy 0 \
+    --server-name 0.0.0.0 \
+    --server-port 23333 \
+    --tp 1 \
+    --chat-template /root/home/AM-Med-Agent/config/chat_template.json 
+```
+
+### W4A16 模型量化
+
+模型有点大了，需要量化一下，降低部署成本。
+
+使用 W4A16 量化策略：
+
+```bash
+lmdeploy lite auto_awq \
+   /root/model/InternVL2-26B \
+  --calib-dataset 'ptb' \
+  --calib-samples 128 \
+  --calib-seqlen 2048 \
+  --w-bits 4 \
+  --w-group-size 128 \
+  --batch-size 1 \
+  --search-scale False \
+  --work-dir /root/model/InternVL2-26B-w4a16-4bit
+```
+
+
+
+## 用药指导助手
+
+### 纯微调版本
+
+```bash
+streamlit run /root/home/AM-Med-Agent/app/medication_instructor.py
+```

@@ -1,0 +1,13 @@
+{
+    "model_name": "internlm2",
+    "system": "<|im_start|>system\n",
+    "meta_instruction": "You are a robot developed by LMDeploy.",
+    "eosys": "<|im_end|>\n",
+    "user": "<|im_start|>user\n",
+    "eoh": "<|im_end|>\n",
+    "assistant": "<|im_start|>assistant\n",
+    "eoa": "<|im_end|>",
+    "separator": "\n",
+    "capability": "chat",
+    "stop_words": ["<|im_end|>"]
+}
