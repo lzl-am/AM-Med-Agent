@@ -124,18 +124,31 @@ lmdeploy serve api_server \
 使用 W4A16 量化策略：
 
 ```bash
+conda activate lmdeploy
+
 lmdeploy lite auto_awq \
-   /root/model/InternVL2-26B \
+   /root/home/AM-Med-Agent/work_dir/medical_finetune/merged \
   --calib-dataset 'ptb' \
   --calib-samples 128 \
   --calib-seqlen 2048 \
   --w-bits 4 \
   --w-group-size 128 \
   --batch-size 1 \
-  --search-scale False \
-  --work-dir /root/model/InternVL2-26B-w4a16-4bit
+  --work-dir /root/home/AM-Med-Agent/model/medical_finetune-7B-w4a16-4bit
 ```
 
+API 部署量化后的模型：
+
+```bash
+lmdeploy serve api_server \
+    /root/home/AM-Med-Agent/model/medical_finetune-7B-w4a16-4bit \
+    --model-format hf \
+    --quant-policy 0 \
+    --server-name 0.0.0.0 \
+    --server-port 23333 \
+    --tp 1 \
+    --chat-template /root/home/AM-Med-Agent/config/chat_template.json 
+```
 
 
 ## 用药指导助手
