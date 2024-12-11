@@ -26,17 +26,17 @@ class DiseaseRouter:
         self.route_prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", self.system),
-                ("human", "{question}"),
+                ("human", "根据用户问题描述，提取疾病关键字，不要输出冗余信息：{question}"),
             ]
         )
         self.disease_router = self.route_prompt | self.structured_llm_router
 
-    def get_disease(self, question: str):
+    def invoke(self, question: str):
         return self.disease_router.invoke({"question": question})
 
 
 if __name__ == "__main__":
     disease_router = DiseaseRouter()
-    print(disease_router.get_disease("我最近有点咳嗽"))
-    print(disease_router.get_disease("我最近有点咳嗽，该吃些什么药？"))
-    print(disease_router.get_disease("最近总是感觉头晕，应该怎么办？"))
+    print(disease_router.invoke("我最近有点咳嗽"))
+    print(disease_router.invoke("我最近有点咳嗽，该吃些什么药？"))
+    print(disease_router.invoke("最近总是感觉头晕，应该怎么办？"))

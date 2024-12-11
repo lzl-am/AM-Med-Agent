@@ -3,7 +3,6 @@ import os.path
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 model_path = os.path.abspath("../../embedding/sentence-transformer")
-
 # 初始化一个HuggingFaceEmbedding对象，用于将文本转换为向量表示
 embed_model = HuggingFaceEmbedding(
     # 指定了一个预训练的sentence-transformer模型的路径

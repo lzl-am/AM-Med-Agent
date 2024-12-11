@@ -143,5 +143,5 @@ lmdeploy lite auto_awq \
 ### 纯微调版本
 
 ```bash
-streamlit run /root/home/AM-Med-Agent/app/medication_instructor.py
+streamlit run /root/home/AM-Med-Agent/app/simple_medication_instructor.py
 ```
