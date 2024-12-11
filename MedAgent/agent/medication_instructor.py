@@ -1,15 +1,26 @@
+import os
+
+from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
+
+
+load_dotenv()
 
 
 class MedicationInstructor:
     def __init__(self):
         # 初始化语言模型
         self.llm = ChatOpenAI(
-            model="/root/home/AM-Med-Agent/work_dir/medical_finetune/merged",
-            api_key="YOUR_API_KEY",
-            base_url="http://127.0.0.1:23333/v1/"
+            model="internlm2.5-latest",
+            api_key=os.getenv("INTERNLM_API_KEY"),
+            base_url="https://internlm-chat.intern-ai.org.cn/puyu/api/v1/"
         )
+        # self.llm = ChatOpenAI(
+        #     model="/root/home/AM-Med-Agent/work_dir/medical_finetune/merged",
+        #     api_key="YOUR_API_KEY",
+        #     base_url="http://127.0.0.1:23333/v1/"
+        # )
         # Prompt
         self.system = """
         Role: 中医智能助手
@@ -43,15 +54,19 @@ class MedicationInstructor:
         self.prompt_template = ChatPromptTemplate.from_messages(
             [
                 ("system", self.system),
-                ("user", "{question}"),
+                ("user", "患者问题：{question} \n\n 相关的医学文献：{documents} \n\n 相关的药品说明书：{drugs}"),
             ]
         )
         self.chain = self.prompt_template | self.llm
 
-    def getInstruction(self, question):
-        return self.chain.invoke({"question": question})
+    def invoke(self, question, documents, drugs):
+        return self.chain.invoke({
+            "question": question,
+            "documents": documents,
+            "drugs": drugs
+        })
 
 
 if __name__ == "__main__":
     instructor = MedicationInstructor()
-    print(instructor.getInstruction("我今天拉稀，肚子疼，请问应该吃什么药？").content)
+    print(instructor.invoke("我今天拉稀，肚子疼，请问应该吃什么药？", [], []).content)

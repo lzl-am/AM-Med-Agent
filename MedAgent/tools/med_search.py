@@ -55,4 +55,6 @@ class PubMedSearchResults(BaseTool):
 
 if __name__ == "__main__":
     pubmed_search = PubMedSearchResults()
-    print(pubmed_search.invoke("我最近有点咳嗽，吃点什么药好"))
+    resp = pubmed_search.invoke("我最近有点咳嗽，吃点什么药好")
+    print(resp)
+    print(len(resp))
