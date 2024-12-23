@@ -1,6 +1,6 @@
 # AM-Med-Agent  
 
-本项目依托：[InternLM](https://github.com/InternLM/Tutorial)  
+本项目基于[InternLM2.5](https://github.com/InternLM)系列大模型,同时感谢上海人工智能实验室提供的实验环境
 
 ## 项目背景
 ### 随访介绍
